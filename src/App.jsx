@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import Notification from "./components/Notification";
 
@@ -12,7 +10,8 @@ function App() {
   // Handler function to update the state when the textarea is edited
   const handleTextareaChange = (event) => {
     var input = event.target.value;
-    setTextareaValue(input.replace(/[^a-zA-Z]+/g, " "));
+    input = input.replace(/[^a-zA-Z.,0-9]+/g, " ");
+    setTextareaValue(input);
   };
 
   const glowingStyle = {
@@ -23,7 +22,7 @@ function App() {
     borderRadius: "0.25rem",
     boxShadow: "0 0 5px #3b82f6",
     transition: "box-shadow 0.3s ease-in-out",
-    marginTop: "15px",
+    marginBottom: "15px",
   };
 
   const handleCopyToClipboard = () => {
@@ -49,21 +48,35 @@ function App() {
 
   return (
     <>
-      <h1>Paste.it</h1>
+      <h1 className="text-2xl font-bold">Paste.it</h1>
       <p className="read-the-docs">Paste any text to remove its formatting</p>
-      <button style={glowingStyle} onClick={handleCopyToClipboard}>
-        Copy to Clipboard
-      </button>
+
       <div className="card">
-        <div class="w-full p-4 bg-gray-900 rounded-lg shadow-md">
+        <div class="w-full rounded-lg">
           <textarea
-            class="w-full h-32 p-2 resize-none bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder=" Enter your text here..."
+            class="w-full h-32 p-2 resize-none bg-gray-800 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg"
+            placeholder="Enter your text here..."
             onChange={handleTextareaChange}
           ></textarea>
         </div>
-        {textareaValue}
       </div>
+      <button style={glowingStyle} onClick={handleCopyToClipboard}>
+        Copy to Clipboard
+      </button>
+
+      <div className="card">
+        <div class="w-full rounded-lg">
+          <textarea
+            class="w-full h-32 p-2 resize-none bg-gray-700 text-white border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg"
+            placeholder="Output here"
+            value={textareaValue}
+            disabled="true"
+          >
+            {" "}
+          </textarea>
+        </div>
+      </div>
+
       {showNotification && (
         <Notification message={copyStatus} duration={5000} />
       )}
